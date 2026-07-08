@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Qué estudio hoy? 🎯</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1e1e24;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* Contenedor de la ruleta y la flecha */
+        .contenedor-ruleta {
+            position: relative;
+            width: 350px;
+            height: 350px;
+            margin-bottom: 30px;
+        }
+
+        /* La flecha indicadora */
+        .flecha {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 30px solid #ff4757;
+            z-index: 10;
+            filter: drop-shadow(0px 4px 4px rgba(0,0,0,0.3));
+        }
+
+        /* El círculo de la ruleta */
+        .ruleta {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 8px solid #fff;
+            position: relative;
+            overflow: hidden;
+            transition: transform 4s cubic-bezier(0.1, 0.8, 0.1, 1); /* Efecto de frenado suave */
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            /* Fondo cónico para hacer las 5 rebanadas exactas (360 grados / 5 = 72 grados cada una) */
+            background: conic-gradient(
+                #ff6b6b 0deg 72deg,
+                #4ecdc4 72deg 144deg,
+                #ffeaa7 144deg 216deg,
+                #a8e6cf 216deg 288deg,
+                #fdcb6e 288deg 360deg
+            );
+        }
+
+        /* Texto de las opciones */
+        .opcion {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            transform-origin: bottom right;
+            bottom: 50%;
+            right: 50%;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.95rem;
+            color: #2d3436;
+            text-align: center;
+        }
+
+        /* Rotamos cada texto para que quede en su rebanada correspondiente */
+        .opcion:nth-child(1) { transform: rotate(36deg) translate(30px, 30px); }
+        .opcion:nth-child(2) { transform: rotate(108deg) translate(30px, 30px); }
+        .opcion:nth-child(3) { transform: rotate(180deg) translate(30px, 30px); }
+        .opcion:nth-child(4) { transform: rotate(252deg) translate(30px, 30px); }
+        .opcion:nth-child(5) { transform: rotate(324deg) translate(30px, 30px); }
+
+        /* Botón central */
+        .boton-girar {
+            padding: 12px 35px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: white;
+            background: #6c5ce7;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+            transition: 0.2s;
+        }
+
+        .boton-girar:hover {
+            background: #5b4cc4;
+            transform: scale(1.05);
+        }
+
+        .boton-girar:active {
+            transform: scale(0.95);
+        }
+
+        /* Resultado */
+        #resultado {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            min-height: 36px;
+            color: #a8e6cf;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🎯 ¿Qué estudiamos hoy?</h1>
+
+    <div class="contenedor-ruleta">
+        <div class="flecha"></div>
+        <div class="ruleta" id="ruleta">
+            <!-- Los textos de las materias -->
+            <div class="opcion">HTML + CSS</div>
+            <div class="opcion">Python</div>
+            <div class="opcion">Excel</div>
+            <div class="opcion">Inglés</div>
+            <div class="opcion">Chino</div>
+        </div>
+    </div>
+
+    <button class="boton-girar" id="btnGirar">¡Girar!</button>
+    <div id="resultado"></div>
+
+    <script>
+        const ruleta = document.getElementById('ruleta');
+        const btnGirar = document.getElementById('btnGirar');
+        const resultado = document.getElementById('resultado');
+
+        let gradosActuales = 0;
+
+        btnGirar.addEventListener('click', () => {
+            // Deshabilitamos el botón para que no vuelvan a clickear mientras gira
+            btnGirar.disabled = true;
+            resultado.innerText = "Girando...";
+
+            // Generamos un giro grande al azar (mínimo 5 vueltas completas + grados extra)
+            const giros Extra = Math.floor(Math.random() * 360);
+            gradosActuales += 1800 + girosExtra; // 1800 grados son 5 vueltas
+
+            // Aplicamos la rotación con CSS
+            ruleta.style.transform = `rotate(${gradosActuales}deg)`;
+
+            // Esperamos 4 segundos (lo que tarda la animación) para dar el veredicto
+            setTimeout(() => {
+                btnGirar.disabled = false;
+                
+                // Calculamos en qué sección cayó basándonos en el ángulo final
+                const anguloReal = gradosActuales % 360;
+                
+                // La flecha está arriba (a los 0/360 grados). Como la ruleta gira a favor de las agujas del reloj,
+                // calculamos la posición inversa para saber qué materia quedó apuntando arriba.
+                const materias = ['HTML + CSS', 'Chino', 'Inglés', 'Excel', 'Python'];
+                const indice = Math.floor(((360 - anguloReal) % 360) / 72);
+                
+                resultado.innerText = `¡Hoy toca: ${materias[indice]}! 🚀`;
+            }, 4000);
+        });
+    </script>
+</body>
+</html>
