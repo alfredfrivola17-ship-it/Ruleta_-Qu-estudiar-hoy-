@@ -134,7 +134,7 @@
 </head>
 <body>
 
-    <h1>🎯 ¿Qué estudiamos hoy?</h1>
+    <h1> ¿Qué estudiamos hoy?</h1>
 
     <div class="contenedor-ruleta">
         <div class="flecha"></div>
@@ -153,37 +153,39 @@
 
     <script>
         const ruleta = document.getElementById('ruleta');
-        const btnGirar = document.getElementById('btnGirar');
-        const resultado = document.getElementById('resultado');
+const btnGirar = document.getElementById('btnGirar');
+const resultado = document.getElementById('resultado');
 
-        let gradosActuales = 0;
+let gradosActuales = 0;
 
-        btnGirar.addEventListener('click', () => {
-            // Deshabilitamos el botón para que no vuelvan a clickear mientras gira
-            btnGirar.disabled = true;
-            resultado.innerText = "Girando...";
+btnGirar.addEventListener('click', () => {
+    // Deshabilitamos el botón temporalmente para que no lo presionen mientras gira
+    btnGirar.disabled = true;
+    resultado.innerText = "FernaanFLooooOOOooooOOoo";
 
-            // Generamos un giro grande al azar (mínimo 5 vueltas completas + grados extra)
-            const giros Extra = Math.floor(Math.random() * 360);
-            gradosActuales += 1800 + girosExtra; // 1800 grados son 5 vueltas
+    // Generamos un giro al azar (mínimo 5 vueltas completas + grados extra)
+    const girosExtra = Math.floor(Math.random() * 360);
+    gradosActuales += 1800 + girosExtra; // 1800 grados equivalen a 5 vueltas completas
 
-            // Aplicamos la rotación con CSS
-            ruleta.style.transform = `rotate(${gradosActuales}deg)`;
+    // Aplicamos la rotación con CSS desde JavaScript
+    ruleta.style.transform = `rotate(${gradosActuales}deg)`;
 
-            // Esperamos 4 segundos (lo que tarda la animación) para dar el veredicto
-            setTimeout(() => {
-                btnGirar.disabled = false;
-                
-                // Calculamos en qué sección cayó basándonos en el ángulo final
-                const anguloReal = gradosActuales % 360;
-                
-                // La flecha está arriba (a los 0/360 grados). Como la ruleta gira a favor de las agujas del reloj,
-                // calculamos la posición inversa para saber qué materia quedó apuntando arriba.
-                const materias = ['HTML + CSS', 'Chino', 'Inglés', 'Excel', 'Python'];
-                const indice = Math.floor(((360 - anguloReal) % 360) / 72);
-                
-                resultado.innerText = `¡Hoy toca: ${materias[indice]}! 🚀`;
-            }, 4000);
+    // Esperamos 4 segundos (lo que tarda en frenar la ruleta) para dar el resultado
+    setTimeout(() => {
+        btnGirar.disabled = false;
+        
+        // Calculamos los grados finales descartando las vueltas completas usando el residuo (%)
+        const anguloReal = gradosActuales % 360;
+        
+        // Esta es la lista sincronizada con el orden de las rebanadas en pantalla:
+        const materias = ['HTML + CSS', 'Chino', 'Inglés', 'Excel', 'Python'];
+        
+        // Dividimos los 360 grados entre las 5 materias (72 grados por rebanada)
+        // Usamos una fórmula matemática para saber cuál quedó apuntando a la flecha de arriba
+        const indice = Math.floor(((360 - anguloReal) % 360) / 72);
+        
+        resultado.innerText = `¡Hoy toca:__ ${materias[indice]}!__ Te garcho?`;
+    }, 4000);
         });
     </script>
 </body>
